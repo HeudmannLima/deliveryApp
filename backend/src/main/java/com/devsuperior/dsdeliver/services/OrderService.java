@@ -63,4 +63,17 @@ public class OrderService {
 		// aqui o meu RETORNO do POST é exatamente a nova ordem criada
 		return new OrderDTO(newOrder);
 	}
+	
+	
+	// metodo pra CONFIRMAR PEDIDO ENTREGUE (PUT)
+	@Transactional
+	public OrderDTO setDelivered(Long id) {
+		Order order = orderRepository.getOne(id);
+		
+		order.setStatus(OrderStatus.DELIVERED);
+		order = orderRepository.save(order);
+		
+		return new OrderDTO(order);
+	}
+	
 }
