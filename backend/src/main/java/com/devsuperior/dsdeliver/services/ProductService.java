@@ -33,7 +33,7 @@ public class ProductService {
 	// Para garantir o Transaction com o BD, readOnly pra evitar o locking do bd
 	
 	@Transactional(readOnly = true)
-	public List<ProductDTO> findAll() {
+	public List<ProductDTO> buscarProdutos() {
 		List<Product> list = repository.findAllByOrderByNameAsc();
 		
 		// Pra mandar pra REST tem que ser array (list), porem
