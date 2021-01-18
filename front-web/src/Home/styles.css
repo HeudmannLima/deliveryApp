@@ -1,6 +1,11 @@
 .home-container {
   padding-top: 100px;
-  height: calc(100vh - 226px);
+  height: calc(100vh - 253px); 
+  /*  
+    100vh (100% da altura do dispositivo do usuario) - 
+    253px (soma do padding, margin, etc do tam altura do rodapé) 
+    para SUMIR a barra de rolagem lateral
+  */
 }
 
 .home-container h1 {
