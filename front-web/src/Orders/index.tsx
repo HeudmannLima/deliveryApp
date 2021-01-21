@@ -2,27 +2,29 @@ import { useEffect, useState } from 'react';
 import ProductsList from './ProductsList';
 import StepsHeader from './StepsHeader';
 import { OrderLocationData, Product } from './types';
+import { useHistory } from 'react-router-dom';
 
-import { fetchProducts, saveOrder } from './../api'
+import * as Api from './../api'
 import OrderLocation from './OrderLocation';
 
 import './styles.css';
 import OrderSumary from './OrderSummary';
 import Footer from '../Footer';
-import { checkIsSelected } from '../utils/helpers';
+import { checkIsSelected, formatPrice } from '../utils/helpers';
 import { toast } from 'react-toastify';
 
 function Orders() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [orderLocation, setOrderLocation] = useState<OrderLocationData>();
+  let history = useHistory();
 
   // reduce: percorre o array, com o valor inicial de 0, e soma
   // cada um item.price do array de selectedProducts
   const totalPrice = selectedProducts.reduce((sum, item) => sum+item.price, 0);
   
   useEffect(() => {
-    fetchProducts()
+    Api.fetchProducts()
       .then(response => setProducts(response.data))
       .catch(err => {
         toast.error(`Erro ao listar os Produtos`);
@@ -59,18 +61,50 @@ function Orders() {
       products: extractedProductdsIds
     }
 
-    saveOrder(payloadData)
+    Api.saveOrder(payloadData)
       .then((response) => {
-        toast.info(`Pedido N.${response.data.id} enviado com sucesso!`, {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
+        console.log(response);
+        
+        toast.info(<strong>Pedido enviado com sucesso!</strong>,
+        {
+          position: "top-center",
+          autoClose: false,
+          hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
         });
+
+        toast(
+          <>
+            <br/>
+            <strong>Pedido No: </strong>{response.data.id}<br/>
+            <strong>Qtd Itens: </strong>{selectedProducts.length}<br/><br/>
+            <strong>Descrição do Pedido</strong><br/>
+            <hr/>
+            {selectedProducts.map((item) =>
+              <>
+                <strong>+ {item.name}</strong>
+                <strong> | {formatPrice(item.price)}</strong><br/>
+              </>
+            )
+          }
+          <hr/>
+          <strong>Total: {formatPrice(totalPrice)}</strong>
+          <br/><br/>
+          <strong>Endereço para entrega: </strong>{response.data.address}<br/><br/>
+          </>, {
+            position: "top-center",
+            autoClose: false,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         setSelectedProducts([]);
+        history.push('/');
       })
       .catch((err) => {
         toast.error(`Erro ao enviar o Pedido!`);
