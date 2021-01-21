@@ -3,7 +3,7 @@ import ProductsList from './ProductsList';
 import StepsHeader from './StepsHeader';
 import { OrderLocationData, Product } from './types';
 
-import * as Api from './../Api'
+import { fetchProducts, saveOrder } from '../Api'
 import OrderLocation from './OrderLocation';
 
 import './styles.css';
@@ -22,7 +22,7 @@ function Orders() {
   const totalPrice = selectedProducts.reduce((sum, item) => sum+item.price, 0);
   
   useEffect(() => {
-    Api.fetchProducts()
+    fetchProducts()
       .then(response => setProducts(response.data))
       .catch(err => {
         toast.error(`Erro ao listar os Produtos`);
@@ -59,7 +59,7 @@ function Orders() {
       products: extractedProductdsIds
     }
 
-    Api.saveOrder(payloadData)
+    saveOrder(payloadData)
       .then((response) => {
         toast.info(`Pedido N.${response.data.id} enviado com sucesso!`, {
           position: "top-right",
