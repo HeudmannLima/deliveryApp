@@ -3,9 +3,10 @@ import ProductsList from './ProductsList';
 import StepsHeader from './StepsHeader';
 import { OrderLocationData, Product } from './types';
 
-import './styles.css';
 import { fetchProducts } from '../Api'
 import OrderLocation from './OrderLocation';
+
+import './styles.css';
 
 function Orders() {
   const [products, setProducts] = useState<Product[]>([]);
