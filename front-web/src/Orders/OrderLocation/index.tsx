@@ -95,9 +95,9 @@ function OrderLocation({ onChangeLocation }: Props) {
               className="filter"
               loadOptions={loadOptions} // a cada ESCRITA, ele pega o input e executa loadOptions(inputValue)
               onChange={value => {
-                console.log("okok", value);
                 handleChangeSelect(value as Place)
-              }} //ao SELECIONAR de fato a opção do select, o value retornado é os de Place
+                //ao SELECIONAR de fato a opção do select, o value retornado é os de Place
+              }} 
             />
           </div>
           <MapContainer 
