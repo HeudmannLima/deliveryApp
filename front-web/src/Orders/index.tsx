@@ -3,7 +3,7 @@ import ProductsList from './ProductsList';
 import StepsHeader from './StepsHeader';
 import { OrderLocationData, Product } from './types';
 
-import * as Api from '../Api'
+import * as Api from './../Api'
 import OrderLocation from './OrderLocation';
 
 import './styles.css';
