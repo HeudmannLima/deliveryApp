@@ -1,4 +1,5 @@
 import { Product } from '../types';
+import { formatPrice } from '../../utils/helpers';
 
 type Props = {
   product: Product;
@@ -9,15 +10,6 @@ type Props = {
   // de colocar no props essa funcao, pros dados de produtcs
   // irem pro componente PAI do PAI (/Oders/), ou seja:
   // daqui: products => /ProductCard/ => /ProductList/ => /Orders/
-}
-
-function formatPrice(price: number) {
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 2,
-  });
-  return formatter.format(price);
 }
 
 function ProductCard({ product, onSelectProduct, isSelected }: Props) {
