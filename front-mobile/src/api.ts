@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// const API_URL = 'http://192.168.0.26:8080';
 const API_URL = 'https://dsdeliver-heud.herokuapp.com';
 
 export function fetchOrders() {

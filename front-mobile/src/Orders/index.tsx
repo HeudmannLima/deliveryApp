@@ -39,13 +39,14 @@ function Orders() {
     <>
       <Header />
       <ScrollView style={styles.container}>
-        {isLoading ? (
-            <>
-              <View style={styles.imgContainer}>
-                <Text style={styles.text}>Buscando pedidos...</Text>
-                <Image style={styles.loadImg} source={require('../../assets/deliveryman.png')} />
-              </View>
-            </>
+        { isLoading ? (
+            <View style={styles.imgContainer}>
+              <Text style={styles.text}>Buscando pedidos...</Text>
+              <Image 
+                style={styles.loadImg} 
+                source={require('../../assets/deliveryman.png')} 
+              />
+            </View>
           ) :
           orders.map(order =>
             <TouchableWithoutFeedback 
@@ -55,8 +56,16 @@ function Orders() {
               {/* // esse {order} tá vindo/RECEBENDO do filho /OrderCard/ */}
               <OrderCard order={order} />  
             </TouchableWithoutFeedback>
-          )
-        }
+          )}
+        { orders.length === 0 && !isLoading && (
+          <View style={styles.imgContainer}>
+            <Text style={styles.text}>Não há pedidos no momento.</Text>
+            <Image 
+              style={styles.loadImg} 
+              source={require('../../assets/deliveryman.png')}
+            />
+          </View> 
+        )}
       </ScrollView>
     </>
   );
