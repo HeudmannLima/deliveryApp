@@ -1,10 +1,13 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View, Text, Image, Alert } from 'react-native';
-import Header from '../Header';
-import { Order } from '../types';
-import OrderCard from '../OrderCard';
 import { RectButton } from 'react-native-gesture-handler';
+import { View, Text, Alert, Linking } from 'react-native';
+
+import Header from '../Header';
+import OrderCard from '../OrderCard';
+
+import { Order } from '../types';
+import { styles } from './styles';
 import { confirmDelivery } from '../api';
 
 // como o componente está em uma Route do react,
@@ -12,9 +15,7 @@ import { confirmDelivery } from '../api';
 // precisa-se extrair de route.params, neste caso route.params.order
 type Props = {
   route: {
-    params: {
-      order: Order;
-    }
+    params: { order: Order }
   }
 }
 
@@ -23,13 +24,19 @@ function OrderDetails({ route }: Props) {
   const { order } = route.params;
   const navigation = useNavigation();
  
+  function handleStartGPSNavigation() {
+    
+    Linking.openURL(`https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=${order.latitude},${order.longitude}`);
+    console.log(`https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=${order.latitude},${order.longitude}`);
+
+  }
   function handleConfirmDelivery() {
     Alert.alert(
       "Confirmar entrega",
       `\nConfirma a entrega do Pedido ${order.id}?`,
-      [ { text: "OK", onPress: () => confirm(), style: 'cancel' },
-        { text: "Não", onPress: () => {}, style: 'destructive' }
-      ], { cancelable: false }
+      [{ text: "OK", onPress: () => confirm(), style: 'cancel' },
+      { text: "Não", onPress: () => {}, style: 'destructive' } ],
+      { cancelable: false }
     );
 
     function confirm() {
@@ -46,6 +53,7 @@ function OrderDetails({ route }: Props) {
   }
 
   function handleOnCancel() {
+    // navigation.navigate('OrderMap', { order });
     navigation.navigate('Orders');
   }
 
@@ -54,7 +62,7 @@ function OrderDetails({ route }: Props) {
       <Header />
       <View style={styles.container}>
         <OrderCard order={order} />
-        <RectButton style={styles.button}>
+        <RectButton style={styles.button} onPress={handleStartGPSNavigation}>
           <Text style={styles.buttonText}>INICIAR NAVEGAÇÃO</Text>
         </RectButton>
         <RectButton style={styles.button} onPress={handleConfirmDelivery}>
@@ -67,66 +75,5 @@ function OrderDetails({ route }: Props) {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingRight: '5%',
-    paddingLeft: '5%'
-  },
-  button: {
-    backgroundColor: '#DA5C5C',
-    flexDirection: 'row',
-    borderRadius: 10,
-    marginTop: 40,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonText: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    paddingLeft: 50,
-    paddingRight: 50,
-    fontWeight: 'bold',
-    fontSize: 18,
-    color: '#FFF',
-    letterSpacing: -0.24,
-    fontFamily: 'OpenSans_700Bold'
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  text: {
-    fontWeight: 'normal',
-    fontSize: 14,
-    lineHeight: 19,
-    letterSpacing: -0.24,
-    color: '#9E9E9E',
-    fontFamily: 'OpenSans_400Regular'
-  },
-  orderName: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 25,
-    letterSpacing: -0.24,
-    color: '#263238',
-    fontFamily: 'OpenSans_700Bold'
-  },
-  orderPrice: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 25,
-    textAlign: 'right',
-    letterSpacing: -0.24,
-    color: '#DA5C5C',
-    fontFamily: 'OpenSans_700Bold'
-  },
-  productsList: {
-    borderTopColor: '#E6E6E6',
-    borderTopWidth: 1,
-    marginTop: 20,
-    paddingTop: 15
-  }
-});
 
 export default OrderDetails;

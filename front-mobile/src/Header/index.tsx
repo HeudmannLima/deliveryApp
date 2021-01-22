@@ -1,7 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
+import { styles } from './styles';
 
 function Header() {
   const navigation = useNavigation()
@@ -19,25 +21,5 @@ function Header() {
     </TouchableWithoutFeedback>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#DA5C5C',
-    height: 90,
-    paddingTop: 50,
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-
-  text: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    fontFamily: 'OpenSans_700Bold',
-    lineHeight: 25,
-    letterSpacing: -0.24,
-    color: '#FFF',
-    marginLeft: 15
-  }
-});
 
 export default Header;

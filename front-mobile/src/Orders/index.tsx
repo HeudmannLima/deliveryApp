@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { Text, Alert, Image, View } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, Alert } from 'react-native';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { fetchOrders } from '../api';
-import { Order } from '../types';
+
 import Header from '../Header';
 import OrderCard from '../OrderCard';
+
+import { Order } from '../types';
+import { fetchOrders } from '../api';
+import { styles } from './styles';
 
 function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -36,7 +39,14 @@ function Orders() {
     <>
       <Header />
       <ScrollView style={styles.container}>
-        {isLoading ? (<Text style={styles.text}>Buscando pedidos...</Text>) :
+        {isLoading ? (
+            <>
+              <View style={styles.imgContainer}>
+                <Text style={styles.text}>Buscando pedidos...</Text>
+                <Image style={styles.loadImg} source={require('../../assets/deliveryman.png')} />
+              </View>
+            </>
+          ) :
           orders.map(order =>
             <TouchableWithoutFeedback 
               key={order.id}
@@ -51,22 +61,5 @@ function Orders() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingRight: '5%',
-    paddingLeft: '5%'
-  },
-  text: {
-    marginTop: '55%',
-    marginLeft: '25%',
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 25,
-    letterSpacing: -0.24,
-    color: '#263238',
-    fontFamily: 'OpenSans_700Bold'
-  }
-});
 
 export default Orders;

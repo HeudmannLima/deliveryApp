@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+
 import { Order } from '../types';
 import { dateFromNow, formatPrice } from '../utils/helpers';
+
+import { styles } from './styles';
 
 type Props = {
   order: Order;
@@ -16,6 +19,9 @@ function OrderCard({ order }: Props) {
       </View>
       <Text style={styles.textTime}>{dateFromNow(order.moment)}</Text>
       <View style={styles.productsList}>
+        <Text style={styles.textAddress}>{order.address}</Text>
+      </View>
+      <View style={styles.productsList}>
       {order.products.map(product => (
         <Text key={product.id} style={styles.text}>{product.name}</Text>
       ))}
@@ -23,66 +29,5 @@ function OrderCard({ order }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: '10%',
-    marginLeft: '2%',
-    marginRight: '2%',
-    marginBottom: '2%',
-    padding: 20,
-    paddingBottom: 23,
-    backgroundColor: '#FFF',
-    shadowOpacity: 0.15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 20,
-    borderRadius: 10,
-    elevation: 5
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  text: {
-    fontWeight: 'normal',
-    fontSize: 14,
-    lineHeight: 19,
-    letterSpacing: -0.24,
-    color: '#9E9E9E',
-    fontFamily: 'OpenSans_400Regular'
-  },
-  textTime: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    lineHeight: 25,
-    letterSpacing: -0.24,
-    color: '#9E9E9E',
-    fontFamily: 'OpenSans_700Bold'
-  },
-  orderName: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 25,
-    letterSpacing: -0.24,
-    color: '#263238',
-    fontFamily: 'OpenSans_700Bold'
-  },
-  orderPrice: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    lineHeight: 25,
-    textAlign: 'right',
-    letterSpacing: -0.24,
-    color: '#DA5C5C',
-    fontFamily: 'OpenSans_700Bold'
-  },
-  productsList: {
-    borderTopColor: '#E6E6E6',
-    borderTopWidth: 1,
-    marginTop: 20,
-    paddingTop: 15
-  }
-});
 
 export default OrderCard;
