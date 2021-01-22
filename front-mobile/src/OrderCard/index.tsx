@@ -1,20 +1,26 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { Order } from '../types';
+import { dateFromNow, formatPrice } from '../utils/helpers';
 
-function OrderCard() {
+type Props = {
+  order: Order;
+}
+
+function OrderCard({ order }: Props) {
   return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.orderName}>PEDIDO 1</Text>
-          <Text style={styles.orderPrice}>R$ 50,00</Text>
-        </View>
-        <Text style={styles.text}>Há 30 min.</Text>
-        <View style={styles.productsList}>
-          <Text style={styles.text}>Pizza de Calabresa</Text>
-          <Text style={styles.text}>Pizza de 4 Queijos</Text>
-          <Text style={styles.text}>Pizza Portuguesa</Text>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.orderName}>Pedido {order.id}</Text>
+        <Text style={styles.orderPrice}>{formatPrice(order.total)}</Text>
       </View>
+      <Text style={styles.textTime}>{dateFromNow(order.moment)}</Text>
+      <View style={styles.productsList}>
+      {order.products.map(product => (
+        <Text key={product.id} style={styles.text}>{product.name}</Text>
+      ))}
+      </View>
+    </View>
   );
 }
 
@@ -24,9 +30,10 @@ const styles = StyleSheet.create({
     marginLeft: '2%',
     marginRight: '2%',
     marginBottom: '2%',
-    padding: 15,
+    padding: 20,
+    paddingBottom: 23,
     backgroundColor: '#FFF',
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 20,
@@ -44,6 +51,14 @@ const styles = StyleSheet.create({
     letterSpacing: -0.24,
     color: '#9E9E9E',
     fontFamily: 'OpenSans_400Regular'
+  },
+  textTime: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    lineHeight: 25,
+    letterSpacing: -0.24,
+    color: '#9E9E9E',
+    fontFamily: 'OpenSans_700Bold'
   },
   orderName: {
     fontWeight: 'bold',
