@@ -20,12 +20,14 @@ function Home() {
               FAZER PEDIDO
             </Link>
           </div>
-          <div className="home-image">
-            <MainImage />
+          <div>
+            <MainImage className="home-image" />
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="home-footer"> 
+        <Footer />
+      </div>
     </>
   )
 }

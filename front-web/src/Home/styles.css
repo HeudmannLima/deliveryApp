@@ -1,3 +1,27 @@
+@media (max-width: 900px) {
+  .home-container .home-content {
+    display: block;
+    text-align: center;
+  }
+  .home-container {
+    margin-top: -13%;
+    margin-bottom: 25%;
+  }
+  .home-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .home-image {
+    width: 80%;
+    height: auto;
+    margin-top: 13%;
+  }
+  .home-footer {
+    margin-top: 80%;
+  }
+}
+
 .home-container {
   padding-top: 100px;
   height: calc(100vh - 253px); 
@@ -54,3 +78,4 @@
   background-color: var(--primary-hover-color);
   transform: scale(1.05);
 }
+

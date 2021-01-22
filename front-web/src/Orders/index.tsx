@@ -63,7 +63,7 @@ function Orders() {
 
     Api.saveOrder(payloadData)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         
         toast.info(<strong>Pedido enviado com sucesso!</strong>,
         {
