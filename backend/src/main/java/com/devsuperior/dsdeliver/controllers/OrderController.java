@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,8 @@ public class OrderController {
 	@Autowired
 	private OrderService service;
 	
+	@Autowired
+	private SimpMessagingTemplate webSocket;
 	
 	@GetMapping
 	public ResponseEntity<List<OrderDTO>> getOrders() {
@@ -32,7 +35,6 @@ public class OrderController {
 		// aqui vai retornar GET a lista dos itens
 		return ResponseEntity.ok().body(list);
 	}
-	
 	
 	// Como o que vem do FRONTEND vai ser um JSON contendo os dados de Order,
 	// é necessario usar o @RequestBody pois assim vai converter o body json pra objeto java (dto)
@@ -46,6 +48,9 @@ public class OrderController {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(dto.getId()).toUri();
 		
+		// Websocket send confirmation
+		webSocket.convertAndSend("/topic/newOrder", new String("data");
+
 		// pra retornar a resposta 201, passa a URI criada, e por fim passa o objeto(body) criado
 		return ResponseEntity.created(uri).body(dto);
 	}

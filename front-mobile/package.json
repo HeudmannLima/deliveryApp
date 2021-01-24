@@ -7,11 +7,27 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
+  "expo": {
+    "name": "Heud DeliverApp",
+    "icon": "./assets/logo.png",
+    "version": "1.0.0",
+    "slug": "your-app-slug",
+    "ios": {
+      "bundleIdentifier": "com.heud.deliverapp",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.heud.deliverapp",
+      "versionCode": 1
+    }
+  },
   "dependencies": {
     "@expo-google-fonts/open-sans": "^0.1.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.1",
     "@react-navigation/stack": "^5.14.0",
+    "@types/sockjs-client": "^1.5.0",
+    "@types/stompjs": "^2.3.4",
     "axios": "^0.21.1",
     "dayjs": "^1.10.3",
     "expo": "~40.0.0",
@@ -24,7 +40,10 @@
     "react-native-gesture-handler": "~1.8.0",
     "react-native-screens": "~2.15.0",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "11.0.0"
+    "react-native-webview": "11.0.0",
+    "react-stompjs": "^0.5.3",
+    "sockjs-client": "^1.5.0",
+    "stompjs": "^2.3.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

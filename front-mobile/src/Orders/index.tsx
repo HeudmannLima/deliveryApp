@@ -7,33 +7,55 @@ import Header from '../Header';
 import OrderCard from '../OrderCard';
 
 import { Order } from '../types';
-import { fetchOrders } from '../api';
+import { API_URL, fetchOrders } from '../api';
 import { styles } from './styles';
+
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoadind] = useState<boolean>();
+  const [connected, setConnected] = useState<boolean>();
+  const [socketStatus, setSocketStatus] = useState<string>();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  function fetchData() {
+  var stompClient: Stomp.Client;
+
+  async function connect() {
+    setConnected(true);
+    var socket = new SockJS(`${API_URL}/stomp`);
+    stompClient = Stomp.over(socket);
+    await stompClient.connect({}, function() {
+      stompClient.subscribe('/topic/newOrder', (data) => {
+        setSocketStatus(data.body);
+      })
+    }, (error) => {
+      console.log("Erro de comunicação com Socket: ", error);
+      setConnected(false);
+    });
+  }
+
+  useEffect(() => {
+    if(!connected) {
+      connect();
+    }
+    isFocused && fetchData();
+}, [isFocused, socketStatus]);
+
+  function fetchData() {    
     setIsLoadind(true);
     fetchOrders()
-    .then(response => setOrders(response.data))
-    .catch(error => 
+      .then(response => setOrders(response.data))
+      .catch(error => 
       Alert.alert(`Houve um erro \n ao listar os pedidos\n\n${error}`))
     .finally(() => setIsLoadind(false));
   }
 
-  useEffect(() => {
-    isFocused && fetchData();
-    // if (isFocused) fetchData();
-    // isFocused ? fetchData() : null;
-  }, [isFocused]);
-
   function handleOnPress(order: Order) {
     navigation.navigate('OrderDetails', { order });
-  }
+  }  
 
   return (
     <>
