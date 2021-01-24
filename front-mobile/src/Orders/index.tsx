@@ -7,45 +7,60 @@ import Header from '../Header';
 import OrderCard from '../OrderCard';
 
 import { Order } from '../types';
-import { API_URL, fetchOrders } from '../api';
 import { styles } from './styles';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
+import { API_URL, fetchOrders } from '../api';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 
 function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoadind] = useState<boolean>();
-  const [connected, setConnected] = useState<boolean>();
-  const [socketStatus, setSocketStatus] = useState<string>();
+  const [connected, setConnected] = useState<boolean>(false);
+  // const [socketStatus, setSocketStatus] = useState<string>();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
   var stompClient: Stomp.Client;
 
-  async function connect() {
+  function connect() {
     setConnected(true);
     var socket = new SockJS(`${API_URL}/stomp`);
     stompClient = Stomp.over(socket);
-    await stompClient.connect({}, function() {
+    stompClient.connect({}, function() {
       stompClient.subscribe('/topic/newOrder', (data) => {
-        setSocketStatus(data.body);
+        fetchData(true);
       })
     }, (error) => {
       console.log("Erro de comunicação com Socket: ", error);
       setConnected(false);
     });
   }
-
-  useEffect(() => {
     if(!connected) {
       connect();
     }
-    isFocused && fetchData();
-}, [isFocused, socketStatus]);
 
-  function fetchData() {    
-    setIsLoadind(true);
+  useEffect(() => {
+    if (isFocused) {
+      fetchData();
+    } 
+    // isFocused && fetchData();
+}, [isFocused]);
+
+  function fetchData(orderAlert?: boolean) {
+    if(orderAlert){
+      showMessage({
+        message: "Novo Pedido",
+        description: "Chegou um novo Pedido para entrega!",
+        type: "success",
+        duration: 4000,
+        animationDuration: 500,
+        icon: 'success',
+      });
+    } else {
+      setIsLoadind(true);
+    }
     fetchOrders()
       .then(response => setOrders(response.data))
       .catch(error => 
