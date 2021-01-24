@@ -49,7 +49,7 @@ public class OrderController {
 					.buildAndExpand(dto.getId()).toUri();
 		
 		// Websocket send confirmation
-		webSocket.convertAndSend("/topic/newOrder", new String("data");
+		webSocket.convertAndSend("/topic/newOrder", new String("data"));
 
 		// pra retornar a resposta 201, passa a URI criada, e por fim passa o objeto(body) criado
 		return ResponseEntity.created(uri).body(dto);
